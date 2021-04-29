@@ -1,0 +1,200 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MaterialApp(
+    home: CalculatorApp(),
+  ));
+}
+
+class CalculatorApp extends StatefulWidget {
+  const CalculatorApp ({required Key key})
+ : super (key: key);  
+  @override
+  CalculatorAppState createState() => CalculatorAppState();
+}
+
+class CalculatorAppState extends State<CalculatorApp> {
+
+// Parámentros que empleará la función onPressOfButton
+
+  
+  var operando1 = 0; 
+  var operando2 = 0;
+  String output; // resultado
+  String operation; // operación actual
+  String calculation = ''; //cálculo
+
+// Función onPressOfButton completa
+  void onPressOfButton(String componenteboton) { 
+    
+    if (componenteboton == "Clear"){
+      operando1 = 0;
+      operando2 = 0;
+      output = "";
+      calculation = "";
+      
+    } else if (componenteboton == "%" || componenteboton == "+"|| componenteboton == "-"|| componenteboton == "*"){
+      operando1 = int.parse(calculation);
+      output = "";
+      operation = componenteboton;
+      
+    } else if (componenteboton == "="){
+      operando2 = int.parse(calculation);
+     
+      if (operation == "%"){
+        output = (operando1 % operando2).toString(); 
+      }
+      if (operation == "+"){
+        output = (operando1 + operando2).toString(); 
+      }
+      if (operation == "-"){
+        output = (operando1 - operando2).toString(); 
+      }
+      if (operation == "*"){
+        output = (operando1 * operando2).toString(); 
+      }
+      
+    } else {
+      output = int.parse(calculation + componenteboton).toString();
+    }
+    
+    setState((){
+      calculation = output;
+    });
+
+  }
+  
+  // Referencia: https://www.youtube.com/watch?v=eVG5DkPF5x8
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Card(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+                padding: EdgeInsets.all(16),
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(calculation, style: TextStyle(fontSize: 30, color: Colors.blue[900])),
+                )),
+            
+            Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  
+                  //Componente boton
+                  CalcButton (txt: "7", callback: (){
+                    onPressOfButton ("7");
+                  }),
+                  //Componente boton
+                    CalcButton(txt: "8",callback: (){
+                     onPressOfButton ("8");
+                  }),
+                  //Componente boton
+                   CalcButton(txt: "9", callback: (){
+                     onPressOfButton ("9");
+                  }),
+                  //Componente boton
+                    CalcButton(txt: "%", callback: (){
+                      onPressOfButton ("%");
+                  }),
+                ]),
+            
+             Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  
+                  //Componente boton
+                    CalcButton(txt: "4", callback: (){
+                      onPressOfButton ("4");
+                  }),
+                  //Componente boton
+                    CalcButton(txt: "5", callback: (){
+                      onPressOfButton ("5");
+                  }),
+                  //Componente boton
+                    CalcButton(txt: "6", callback: (){
+                      onPressOfButton ("6");
+                  }),
+                  //Componente boton
+                    CalcButton(txt: "+", callback: (){
+                      onPressOfButton ("+");
+                  }),
+                ]),
+            
+             Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  
+                  //Componente boton
+                     CalcButton(txt: "1", callback: (){
+                      onPressOfButton ("1");
+                  }),
+                  //Componente boton
+                    CalcButton(txt: "2", callback: (){
+                      onPressOfButton ("2");
+                  }),
+                  //Componente boton
+                    CalcButton(txt: "3", callback: (){
+                      onPressOfButton ("3");
+                  }),
+                  //Componente boton
+                   CalcButton(txt: "-", callback: (){
+                      onPressOfButton ("-");
+                  }),
+                ]),
+
+             Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  //Componente boton
+                   CalcButton(txt: "0", callback: (){
+                      onPressOfButton ("0");
+                  }),
+                  //Componente boton
+                  CalcButton(txt: "=", callback: (){
+                      onPressOfButton ("=");
+                  }),
+                  //Componente boton
+                    CalcButton(txt: "Clear", callback:(){
+                      onPressOfButton ("Clear");
+                  }),
+                  //Componente boton
+                  CalcButton(txt: "*",callback: (){
+                      onPressOfButton ("*");
+                  }),
+
+                ]),
+            
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class CalcButton extends StatelessWidget {
+  final Function callback;
+  final String txt;
+
+  const CalcButton({required Key key, required this.txt, required this.callback})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        height: 60,
+        width: 120,
+        padding: EdgeInsets.all(3.0),
+        child: RaisedButton(
+          child: Text(
+            this.txt,
+            style: TextStyle(color: Colors.white, fontSize: 25),
+          ),
+          color: Colors.indigo,
+          onPressed: this.callback,
+        ));
+  }
+}
